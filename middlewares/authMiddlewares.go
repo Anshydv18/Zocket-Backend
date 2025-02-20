@@ -22,7 +22,7 @@ func AuthenticateUser() gin.HandlerFunc {
 		AuthClaims := &dto.AuthClaims{}
 
 		token, err := jwt.ParseWithClaims(tokenString, AuthClaims, func(token *jwt.Token) (interface{}, error) {
-			return env.Get("JWTKEY"), nil
+			return []byte(env.Get("JWTKEY")), nil
 		})
 
 		if err != nil || !token.Valid {

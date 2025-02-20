@@ -28,7 +28,7 @@ func UserLogin(c *gin.Context) {
 
 	data, err := services.UserLogin(ctx, request)
 	if err != nil {
-		c.JSON(http.StatusOK, response.Fail(ctx, request))
+		c.JSON(http.StatusBadRequest, response.Fail(ctx, request))
 		return
 	}
 
