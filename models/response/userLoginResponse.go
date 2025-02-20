@@ -11,6 +11,8 @@ type UserResponse struct {
 }
 
 func (response *UserResponse) Success(ctx *context.Context, data *dto.UserDto) *UserResponse {
+	response.Status = true
+	response.StatusCode = 200
 	response.UserData = data
 	return response
 }

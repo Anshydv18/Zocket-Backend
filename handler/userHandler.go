@@ -4,6 +4,7 @@ import (
 	"backend/models/requests"
 	"backend/models/response"
 	"backend/services"
+	"backend/utils"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -28,7 +29,11 @@ func UserLogin(c *gin.Context) {
 	data, err := services.UserLogin(ctx, request)
 	if err != nil {
 		c.JSON(http.StatusOK, response.Fail(ctx, request))
+		return
 	}
+
+	auth_token := utils.SetAuthToken(c, data.Name)
+	c.SetCookie("auth_token", auth_token, 1800, "/", "", false, true)
 
 	c.JSON(http.StatusOK, response.Success(ctx, data))
 }
@@ -54,4 +59,11 @@ func CreateUserProfile(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, response.Success(ctx))
+}
+
+func LogoutUser(c *gin.Context) {
+	c.SetCookie(
+		"auth_token", "", 3600, "/", "", false, true,
+	)
+	c.JSON(http.StatusOK, "logout successful")
 }

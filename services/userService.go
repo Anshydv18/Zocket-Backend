@@ -4,7 +4,6 @@ import (
 	"backend/models/dto"
 	"backend/models/entity"
 	"backend/models/requests"
-	"backend/utils"
 	"context"
 	"errors"
 
@@ -12,9 +11,6 @@ import (
 )
 
 func UserLogin(ctx *context.Context, request *requests.UserLoginRequest) (*dto.UserDto, error) {
-	if !utils.ValidateEmail(request.Email) {
-		return nil, errors.New("not a valid email")
-	}
 
 	data, err := entity.GetUserInfoByEmail(ctx, request.Email)
 	if err != nil {
@@ -34,10 +30,6 @@ func UserLogin(ctx *context.Context, request *requests.UserLoginRequest) (*dto.U
 }
 
 func CreateUserProfile(ctx *context.Context, request *requests.UserProfileRequest) error {
-	// if !utils.ValidateEmail(request.Email) {
-	// 	return errors.New("not a valid email")
-	// }
-
 	request.Password, _ = HassPassword(request.Password)
 
 	err := entity.CreateUserProfile(ctx, request)

@@ -11,9 +11,9 @@ import (
 )
 
 type UserData struct {
-	Name         string
-	Email        string
-	Password     string
+	Name         string `json:"name"`
+	Email        string `json:"email"`
+	Password     string `json:"Password"`
 	TaskAssigned interface{}
 }
 
@@ -32,7 +32,7 @@ func GetUserInfoByEmail(ctx *context.Context, email string) (*UserData, error) {
 	var UserData UserData
 	data := collection.FindOne(*ctx, filter)
 
-	if err := data.Decode(UserData); err != nil {
+	if err := data.Decode(&UserData); err != nil {
 		return &UserData, err
 	}
 
