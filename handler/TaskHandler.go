@@ -49,11 +49,11 @@ func FetchTasks(c *gin.Context) {
 		return
 	}
 
-	data, err := services.FetchTaskByEmail(ctx, request.Str)
+	TaskAssigned, AssignedTask, err := services.FetchTaskByEmail(ctx, request.Str)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, response.Fail(ctx, request))
 		return
 	}
 
-	c.JSON(http.StatusOK, response.Success(ctx, data))
+	c.JSON(http.StatusOK, response.Success(ctx, TaskAssigned, AssignedTask))
 }

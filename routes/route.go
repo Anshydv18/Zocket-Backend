@@ -17,6 +17,8 @@ func InitiateRoutes(router *gin.Engine) {
 
 	ProtectedApi := ApiGroup.Group("/p1")
 	ProtectedApi.Use(middlewares.AuthenticateUser())
-	ProtectedApi.POST("/createTask")
+	ProtectedApi.POST("/createTask", handler.CreateTask)
+	ProtectedApi.POST("fetchAllTask", handler.FetchTasks)
 	ProtectedApi.POST("/fetchTaskName", handler.GenerateTaskName)
+
 }

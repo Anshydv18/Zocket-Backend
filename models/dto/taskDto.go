@@ -1,11 +1,11 @@
 package dto
 
 type Task struct {
-	Title         string `json:"title"`
-	Description   string `json:"description"`
-	Deadline      string `json:"deadline"`
-	Priority      string `json:"priority"`
-	Progess       string `json:"progress"`
-	AssigneeEmail string `json:"assigneeEmail"`
-	CreatedBy     string `json:"created_by"`
+	Title         string `bson:"title" json:"title"`
+	Description   string `bson:"description" json:"description"`
+	Deadline      string `bson:"deadline" json:"deadline"`
+	Priority      string `bson:"priority" json:"priority"`
+	Progress      string `bson:"progress" json:"progress"`
+	AssigneeEmail string `bson:"assigneeEmail" json:"assigneeEmail"`
+	CreatedBy     string `bson:"created_by" json:"created_by"`
 }

@@ -11,13 +11,7 @@ import (
 )
 
 type Task struct {
-	Title         string `json:"title"`
-	Description   string `json:"description"`
-	Deadline      string `json:"deadline"`
-	Priority      string `json:"priority"`
-	Progess       string `json:"progress"`
-	AssigneeEmail string `json:"assigneeEmail"`
-	CreatedBy     string `json:"created_by"`
+	dto.Task
 }
 
 func (task *Task) CreateTask(ctx *context.Context) error {
@@ -32,7 +26,7 @@ func (task *Task) CreateTask(ctx *context.Context) error {
 		{Key: "description", Value: task.Description},
 		{Key: "deadline", Value: task.Deadline},
 		{Key: "priority", Value: task.Priority},
-		{Key: "progress", Value: task.Progess},
+		{Key: "progress", Value: task.Progress},
 		{Key: "assigneeEmail", Value: task.AssigneeEmail},
 		{Key: "created_by", Value: task.CreatedBy},
 	}
@@ -49,6 +43,34 @@ func GetTaskByAssigneEmail(ctx *context.Context, email string) ([]*dto.Task, err
 	collection := dbClient.Database(constants.ZOCKETDB).Collection(constants.TASK_COLLECTION)
 	filter := bson.M{
 		"assigneeEmail": email,
+	}
+
+	data, err := collection.Find(*ctx, filter)
+	if err != nil {
+		return nil, err
+	}
+
+	var Tasks []*dto.Task
+	for data.Next(*ctx) {
+		var task dto.Task
+		if err := data.Decode(&task); err != nil {
+			return nil, err
+		}
+		Tasks = append(Tasks, &task)
+	}
+
+	return Tasks, nil
+}
+
+func GetTaskByCreatedByEmail(ctx *context.Context, email string) ([]*dto.Task, error) {
+	dbClient := base.DBInstance
+	if dbClient == nil {
+		return nil, errors.New("error in db connection")
+	}
+
+	collection := dbClient.Database(constants.ZOCKETDB).Collection(constants.TASK_COLLECTION)
+	filter := bson.M{
+		"created_by": email,
 	}
 
 	data, err := collection.Find(*ctx, filter)
