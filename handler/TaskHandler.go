@@ -16,17 +16,17 @@ func CreateTask(c *gin.Context) {
 
 	ctx, err := request.Initiate(c, key)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, response.Fail(ctx, request))
+		c.JSON(http.StatusBadRequest, response.Fail(ctx, request, err))
 		return
 	}
 
 	if err := request.Validate(ctx); err != nil {
-		c.JSON(http.StatusBadRequest, response.Fail(ctx, request))
+		c.JSON(http.StatusBadRequest, response.Fail(ctx, request, err))
 		return
 	}
 
 	if err := services.CreateTask(ctx, request); err != nil {
-		c.JSON(http.StatusBadRequest, response.Fail(ctx, request))
+		c.JSON(http.StatusBadRequest, response.Fail(ctx, request, err))
 		return
 	}
 
@@ -40,20 +40,49 @@ func FetchTasks(c *gin.Context) {
 
 	ctx, err := request.Initiate(c, key)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, response.Fail(ctx, request))
+		c.JSON(http.StatusBadRequest, response.Fail(ctx, request, err))
 		return
 	}
 
 	if err := request.Validate(ctx); err != nil {
-		c.JSON(http.StatusBadRequest, response.Fail(ctx, request))
+		c.JSON(http.StatusBadRequest, response.Fail(ctx, request, err))
 		return
 	}
 
 	TaskAssigned, AssignedTask, err := services.FetchTaskByEmail(ctx, request.Str)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, response.Fail(ctx, request))
+		c.JSON(http.StatusBadRequest, response.Fail(ctx, request, err))
 		return
 	}
 
 	c.JSON(http.StatusOK, response.Success(ctx, TaskAssigned, AssignedTask))
+}
+
+func UpdateTask(c *gin.Context) {
+	key := "update_Task"
+	request := &requests.CreateTaskRequest{}
+	response := &response.BaseResponse{}
+
+	ctx, err := request.Initiate(c, key)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, response.Fail(ctx, request, err))
+		return
+	}
+
+	if err := request.Validate(ctx); err != nil {
+		c.JSON(http.StatusBadRequest, response.Fail(ctx, request, err))
+		return
+	}
+
+	if err := request.ValidateId(ctx); err != nil {
+		c.JSON(http.StatusBadRequest, response.Fail(ctx, request, err))
+		return
+	}
+
+	if err := services.UpdateTask(ctx, request); err != nil {
+		c.JSON(http.StatusBadRequest, response.Fail(ctx, request, err))
+		return
+	}
+
+	c.JSON(http.StatusOK, response.Success(ctx))
 }

@@ -8,7 +8,7 @@ import (
 type BaseResponse struct {
 	Status     bool        `json:"status"`
 	StatusCode int         `json:"status_code"`
-	Error      error       `json:"error" omitempty`
+	Error      string      `json:"error" omitempty`
 	Data       interface{} `json:"request"`
 }
 
@@ -18,8 +18,9 @@ func (response *BaseResponse) Success(ctx *context.Context) *BaseResponse {
 	return response
 }
 
-func (response *BaseResponse) Fail(ctx *context.Context, request interface{}) *BaseResponse {
-	response.Status = true
+func (response *BaseResponse) Fail(ctx *context.Context, request interface{}, err error) *BaseResponse {
+	response.Status = false
 	response.Data = request
+	response.Error = err.Error()
 	return response
 }

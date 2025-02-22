@@ -4,6 +4,7 @@ import (
 	"backend/base"
 	"backend/constants"
 	"backend/models/dto"
+	"backend/models/requests"
 	"context"
 	"errors"
 
@@ -88,4 +89,30 @@ func GetTaskByCreatedByEmail(ctx *context.Context, email string) ([]*dto.Task, e
 	}
 
 	return Tasks, nil
+}
+
+func UpdateTaskValue(ctx *context.Context, request *requests.CreateTaskRequest) error {
+	dbClient := base.DBInstance
+	if dbClient == nil {
+		return errors.New("error in db connection")
+	}
+
+	collection := dbClient.Database(constants.ZOCKETDB).Collection(constants.TASK_COLLECTION)
+	filter := bson.M{
+		"_id": request.Id,
+	}
+
+	_, err := collection.UpdateOne(*ctx, filter, bson.M{
+		"$set": bson.M{
+			"title":         request.Title,
+			"description":   request.Description,
+			"deadline":      request.Deadline,
+			"priority":      request.Priority,
+			"progress":      request.Progress,
+			"assigneeEmail": request.AssigneeEmail,
+			"created_by":    request.CreatedBy,
+		},
+	})
+
+	return err
 }

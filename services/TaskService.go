@@ -51,3 +51,7 @@ func FetchTaskByEmail(ctx *context.Context, email string) ([]*dto.Task, []*dto.T
 
 	return TaskAssigned, AssignedTask, nil
 }
+
+func UpdateTask(ctx *context.Context, request *requests.CreateTaskRequest) error {
+	return entity.UpdateTaskValue(ctx, request)
+}

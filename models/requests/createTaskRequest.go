@@ -40,3 +40,10 @@ func (req *CreateTaskRequest) Validate(ctx *context.Context) error {
 	}
 	return nil
 }
+
+func (req *CreateTaskRequest) ValidateId(ctx *context.Context) error {
+	if req.Id.IsZero() {
+		return errors.New("not a valid task")
+	}
+	return nil
+}

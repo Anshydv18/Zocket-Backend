@@ -15,12 +15,12 @@ func GenerateTaskName(c *gin.Context) {
 	response := &response.StringListResponse{}
 	ctx, err := request.Initiate(c, key)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, response.Fail(ctx, request))
+		c.JSON(http.StatusBadRequest, response.Fail(ctx, request, err))
 		return
 	}
 
 	if err := request.Validate(ctx); err != nil {
-		c.JSON(http.StatusBadRequest, response.Fail(ctx, request))
+		c.JSON(http.StatusBadRequest, response.Fail(ctx, request, err))
 		return
 	}
 

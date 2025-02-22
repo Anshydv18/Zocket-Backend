@@ -17,18 +17,18 @@ func UserLogin(c *gin.Context) {
 
 	ctx, err := request.Initiate(c, key)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, response.Fail(ctx, request))
+		c.JSON(http.StatusBadRequest, response.Fail(ctx, request, err))
 		return
 	}
 
 	if err := request.Validate(ctx); err != nil {
-		c.JSON(http.StatusBadRequest, response.Fail(ctx, request))
+		c.JSON(http.StatusBadRequest, response.Fail(ctx, request, err))
 		return
 	}
 
 	data, err := services.UserLogin(ctx, request)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, response.Fail(ctx, request))
+		c.JSON(http.StatusBadRequest, response.Fail(ctx, request, err))
 		return
 	}
 
@@ -44,17 +44,17 @@ func CreateUserProfile(c *gin.Context) {
 	response := &response.BaseResponse{}
 	ctx, err := request.Initiate(c, key)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, response.Fail(ctx, request))
+		c.JSON(http.StatusBadRequest, response.Fail(ctx, request, err))
 		return
 	}
 
 	if err := request.Validate(ctx); err != nil {
-		c.JSON(http.StatusBadRequest, response.Fail(ctx, request))
+		c.JSON(http.StatusBadRequest, response.Fail(ctx, request, err))
 		return
 	}
 
 	if err := services.CreateUserProfile(ctx, request); err != nil {
-		c.JSON(http.StatusBadRequest, response.Fail(ctx, request))
+		c.JSON(http.StatusBadRequest, response.Fail(ctx, request, err))
 		return
 	}
 
