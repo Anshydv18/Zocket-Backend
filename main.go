@@ -10,6 +10,9 @@ import (
 
 func main() {
 	router := gin.Default()
+
+	router.Use(middlewares.CORSMiddleware())
+
 	router.Use(middlewares.SetContext())
 	base.ConnectDB()
 	routes.InitiateRoutes(router)

@@ -16,7 +16,7 @@ type CreateTaskRequest struct {
 func (req *CreateTaskRequest) Initiate(c *gin.Context, key string) (*context.Context, error) {
 	_ctx, _ := c.Get("context")
 	ctx := _ctx.(context.Context)
-	if err := c.BindJSON(req); err != nil {
+	if err := c.ShouldBindJSON(req); err != nil {
 		return &ctx, err
 	}
 

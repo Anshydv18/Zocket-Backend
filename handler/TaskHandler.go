@@ -4,6 +4,7 @@ import (
 	"backend/models/requests"
 	"backend/models/response"
 	"backend/services"
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -83,6 +84,8 @@ func UpdateTask(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, response.Fail(ctx, request, err))
 		return
 	}
+
+	NotifyUser(request.CreatedBy, fmt.Sprintf("Task %s has been changed", request.CreatedBy))
 
 	c.JSON(http.StatusOK, response.Success(ctx))
 }
