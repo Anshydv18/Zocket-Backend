@@ -10,7 +10,7 @@ import (
 func InitiateRoutes(router *gin.Engine) {
 	ApiGroup := router.Group("/api")
 	{
-		ApiGroup.GET("/ws", handler.WebSocketHandler)
+		ApiGroup.GET("/v1/ws", handler.WebSocketHandler)
 	}
 	UserApi := ApiGroup.Group("/user")
 	UserApi.POST("/logout", handler.LogoutUser)

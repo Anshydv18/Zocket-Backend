@@ -85,7 +85,7 @@ func UpdateTask(c *gin.Context) {
 		return
 	}
 
-	NotifyUser(request.CreatedBy, fmt.Sprintf("Task %s has been changed", request.CreatedBy))
+	NotifyUser(request.CreatedBy, fmt.Sprintf("Task %s has been changed", request.Title))
 
 	c.JSON(http.StatusOK, response.Success(ctx))
 }
